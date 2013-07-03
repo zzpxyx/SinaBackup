@@ -11,7 +11,7 @@ import com.gargoylesoftware.htmlunit.html.HtmlSubmitInput;
 public class Fetcher
 {
 	WebClient webClient = new WebClient();
-
+	
 	public void login() throws Exception
 	{
 		HtmlPage loginPage = webClient.getPage("http://login.sina.com.cn");
@@ -22,15 +22,18 @@ public class Fetcher
 				"//*[@id='main_login']/div[2]/div[2]/div/form/div/ul/li[7]/a[1]/input").get(0);
 		Console console = System.console();
 		if (console == null)
-			System.out.println("hehfoweifh");
+		{
+			System.out.println("No console. Program terminated.");
+			System.exit(-1);
+		}
 		username.setValueAttribute(console.readLine("Username: "));
 		password.setValueAttribute(new String(console.readPassword("Password: ")));
 		loginSubmit.click();
 		webClient.getOptions().setJavaScriptEnabled(false);
+		webClient.getOptions().setCssEnabled(false);
 		HtmlPage redirectPage = webClient.getPage("http://i.blog.sina.com.cn/blogprofile/index.php?com=1");
 		String blogLink = ((HtmlAnchor) redirectPage.getElementById("myblog")).getHrefAttribute();
 		String uid = blogLink.substring(26, 36);
-		// System.out.println(uid);
 		HtmlPage blogPage = webClient
 				.getPage("http://control.blog.sina.com.cn/blog_rebuild/blog/controllers/articlelist.php?uid=" + uid
 						+ "&p=1&status=5");

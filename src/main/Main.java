@@ -7,6 +7,6 @@ public class Main
 	public static void main(String[] args) throws Exception
 	{
 		Fetcher login=new Fetcher();
-		login.login();
+		//login.login();
 	}
 }
