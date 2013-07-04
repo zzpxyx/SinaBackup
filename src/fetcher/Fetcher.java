@@ -2,7 +2,6 @@ package fetcher;
 
 import java.io.Console;
 import java.util.LinkedList;
-import java.util.List;
 
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.DomElement;
@@ -11,21 +10,23 @@ import com.gargoylesoftware.htmlunit.html.HtmlDivision;
 import com.gargoylesoftware.htmlunit.html.HtmlForm;
 import com.gargoylesoftware.htmlunit.html.HtmlInput;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
+import com.gargoylesoftware.htmlunit.html.HtmlSpan;
 import com.gargoylesoftware.htmlunit.html.HtmlSubmitInput;
 
 public class Fetcher
 {
     private WebClient webClient = new WebClient();
     private String uid;
-    private int blogListNumber = 1;
-    private boolean endOfBlogList = false;
+    private boolean blogListScanned = false;
     private LinkedList<String> blogURLList = new LinkedList<String>();
 
     public String getNextBlog() throws Exception
     {
-        if (blogURLList.isEmpty() && !endOfBlogList)
+        if (!blogListScanned)
         {
             scanBlogList();
+            System.out.println(blogURLList.size());
+            blogListScanned = true;
         }
         if (blogURLList.isEmpty())
         {
@@ -38,8 +39,7 @@ public class Fetcher
 
     public boolean isNextBlogAvailable()
     {
-        return !endOfBlogList;
-        // TODO endofbloglist != no more blogs in the list.
+        return !blogURLList.isEmpty();
     }
 
     public void login() throws Exception
@@ -69,21 +69,30 @@ public class Fetcher
 
     private void scanBlogList() throws Exception
     {
-        // HtmlPage blogListPage = webClient
-        // .getPage("http://http://control.blog.sina.com.cn/admin/article/articleencryption.php?uid=" + uid
-        // + "&page=" + blogListNumber);
+        HtmlPage blogListPage;
+        HtmlDivision blogListDiv;
+        int blogListNumber = 1;
+        int blogListMaxNumber = 0;
         blogURLList.clear();
         webClient.getOptions().setJavaScriptEnabled(false);
         webClient.getOptions().setCssEnabled(false);
-        HtmlPage blogListPage = webClient.getPage("file:///tmp/a.html");
-        HtmlDivision blogListDiv = (HtmlDivision) blogListPage.getByXPath("//*[@id='module_928']/div[2]/div/div[1]").get(0);
-        for (DomElement div : blogListDiv.getChildElements())
+        do
         {
-            blogURLList.add(((HtmlAnchor) div.getByXPath("./p[1]/span[2]/a").get(0)).getHrefAttribute());
-        }
-        blogListNumber++;
-        endOfBlogList = true; // terminate after the last list.
-        // TODO judge if end is met.
+            blogListPage = webClient.getPage("http://control.blog.sina.com.cn/admin/article/articleencryption.php?uid=" + uid + "&page=" + blogListNumber);
+            // blogListPage = webClient.getPage("file:///tmp/a.html");
+            blogListDiv = (HtmlDivision) blogListPage.getByXPath("//*[@id='module_928']/div[2]/div/div[1]").get(0);
 
+            for (DomElement div : blogListDiv.getChildElements())
+            {
+                blogURLList.add(((HtmlAnchor) div.getByXPath("./p[1]/span[2]/a").get(0)).getHrefAttribute());
+            }
+            if (blogListMaxNumber == 0)
+            {
+                String blogListMaxNumberString = ((HtmlSpan) blogListPage.getByXPath("//*[@id='module_928']/div[2]/div/div[2]/ul/span").get(0))
+                        .getTextContent();
+                blogListMaxNumber = Integer.valueOf(blogListMaxNumberString.substring(1, blogListMaxNumberString.length() - 1));
+            }
+            blogListNumber++;
+        } while (blogListNumber <= blogListMaxNumber);
     }
 }
