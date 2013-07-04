@@ -6,7 +6,10 @@ public class Main
 {
 	public static void main(String[] args) throws Exception
 	{
-		Fetcher login=new Fetcher();
-		//login.login();
+		Fetcher fetcher=new Fetcher();
+		for (int a=0;a<50;a++)
+		{
+		    System.out.println(fetcher.getNextBlog());
+		}
 	}
 }
