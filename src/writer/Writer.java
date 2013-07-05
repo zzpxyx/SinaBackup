@@ -10,9 +10,14 @@ public class Writer
 {
     private BufferedWriter bw;
 
-    public Writer() throws IOException
+    public Writer(String blogFileName) throws IOException
     {
-        bw = new BufferedWriter(new FileWriter("temp.txt", true));
+        bw = new BufferedWriter(new FileWriter(blogFileName, true));
+    }
+
+    public void close() throws IOException
+    {
+        bw.close();
     }
 
     public void write(Blog blog) throws IOException
@@ -27,10 +32,5 @@ public class Writer
         bw.newLine();
         bw.newLine();
         bw.flush();
-    }
-
-    public void close() throws IOException
-    {
-        bw.close();
     }
 }

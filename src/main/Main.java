@@ -2,6 +2,7 @@ package main;
 
 import parser.Parser;
 import writer.Writer;
+import checker.Checker;
 
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
@@ -15,13 +16,15 @@ public class Main
         // Fetcher fetcher = new Fetcher();
         // fetcher.login();
         // fetcher.getNextBlog();
-        Parser parser = new Parser();
-        WebClient webClient = new WebClient();
-        webClient.getOptions().setJavaScriptEnabled(false);
-        webClient.getOptions().setCssEnabled(false);
-        HtmlPage blogPage = webClient.getPage("file:///tmp/a.html");
-        Writer writer = new Writer();
-        writer.write(parser.parse(blogPage));
-        writer.close();
+        // Parser parser = new Parser();
+        // WebClient webClient = new WebClient();
+        // webClient.getOptions().setJavaScriptEnabled(false);
+        // webClient.getOptions().setCssEnabled(false);
+        // HtmlPage blogPage = webClient.getPage("file:///tmp/a.html");
+        // Writer writer = new Writer("/tmp/temp.txt");
+        // writer.write(parser.parse(blogPage));
+        // writer.close();
+        Checker checker = new Checker("/tmp/temp.txt");
+        checker.getLastBlogDateTime();
     }
 }
