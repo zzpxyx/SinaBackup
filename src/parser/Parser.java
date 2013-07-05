@@ -24,8 +24,9 @@ public class Parser
         }
         blog.body = blog.body.replaceAll("\r", "\n");
         blog.body = blog.body.replaceAll("\n+", "\n");
-        blog.body = blog.body.replaceAll("\n", "\r\n\r\n");
-        blog.body = blog.body.substring(0, blog.body.length() - 4);
+        blog.body = blog.body.replaceAll("\n", "\r\n\t");
+        blog.body = "\t" + blog.body;
+        blog.body = blog.body.substring(0, blog.body.length() - 3);
         return blog;
     }
 }

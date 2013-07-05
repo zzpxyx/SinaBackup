@@ -22,5 +22,6 @@ public class Main
         HtmlPage blogPage = webClient.getPage("file:///tmp/a.html");
         Writer writer = new Writer();
         writer.write(parser.parse(blogPage));
+        writer.close();
     }
 }
