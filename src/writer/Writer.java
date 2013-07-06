@@ -18,6 +18,7 @@ public class Writer
     public void close() throws IOException
     {
         bw.close();
+        System.out.println("Finished writing to file.");
     }
 
     public void write(Blog blog) throws IOException
