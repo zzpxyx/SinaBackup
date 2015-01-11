@@ -1,6 +1,6 @@
 新浪私密博文备份
 ================
-本程序用于备份新浪博客的*私密*博文。
+本程序用于备份新浪博客的**私密**博文。
 
 运行环境
 --------
@@ -38,7 +38,7 @@ Known Issues
 
 * Due to variation of the blog settings, parsing mechanism in this program may not work correctly. Please change the format strings accordingly, if necessary.
 
-* Sina servers have limits on the accessing rate. If SinaBackup ternimates unexpectedly, please run the program again. SinaBackup has a built-in incremental backup mechanism.
+* Sina servers have limits on the accessing rate. If SinaBackup terminates unexpectedly, please run the program again. SinaBackup has a built-in incremental backup mechanism.
 
 * SinaBackup writes the blogs into blogs.txt under current folder.
 
